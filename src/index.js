@@ -18,15 +18,32 @@
 
 import { createStore } from "redux";
 
+const initialState = {
+  results: 15000,
+  value: [],
+};
+
 //// ตรวจเช็ต action
-const reducer = (state, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD":
-      state += action.payload;
+      state = {
+        // results: state.results,
+        // value: state.value
+        ...state,
+        results: (state.results += action.payload),
+        value: [...state.value, action.payload],
+      };
 
       break;
     case "SUBTRACT":
-      state -= action.payload;
+      // state -= action.payload;
+      state = {
+        ...state,
+        results: (state.results -= action.payload),
+        value: [...state.value, action.payload],
+      };
+
       break;
 
     default:
@@ -36,7 +53,7 @@ const reducer = (state, action) => {
   return state;
 };
 
-const store = createStore(reducer, 15000);
+const store = createStore(reducer);
 
 // แสดงค่าของ state ที่อยู่ใน store
 store.subscribe(() => {
@@ -46,9 +63,17 @@ store.subscribe(() => {
 // ส่ง action
 store.dispatch({
   type: "ADD",
-  payload: 500,
+  payload: 15000,
+});
+store.dispatch({
+  type: "ADD",
+  payload: 15000,
+});
+store.dispatch({
+  type: "ADD",
+  payload: 30000,
 });
 store.dispatch({
   type: "SUBTRACT",
-  payload: 10000,
+  payload: 8000,
 });
