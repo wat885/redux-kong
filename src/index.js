@@ -16,15 +16,39 @@
 // // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
 
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 
 const initialState = {
   results: 15000,
   value: [],
 };
 
-//// ตรวจเช็ต action
-const reducer = (state = initialState, action) => {
+const userReducer = (state = { name: "kong", age: 15 }, action) => {
+  switch (action.type) {
+    case "setName":
+      state = {
+        ...state,
+        name: action.payload,
+      };
+
+      break;
+    case "setAge":
+      state = {
+        ...state,
+        age: action.payload,
+      };
+
+      break;
+
+    default:
+      break;
+  }
+
+  return state;
+};
+
+//// reducer ใช่่ตรวจเช็ต action
+const employeeReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD":
       state = {
@@ -53,7 +77,7 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-const store = createStore(reducer);
+const store = createStore(combineReducers({ employeeReducer, userReducer }));
 
 // แสดงค่าของ state ที่อยู่ใน store
 store.subscribe(() => {
@@ -66,14 +90,23 @@ store.dispatch({
   payload: 15000,
 });
 store.dispatch({
-  type: "ADD",
-  payload: 15000,
+  type: "setName",
+  payload: "Redux",
 });
 store.dispatch({
-  type: "ADD",
-  payload: 30000,
+  type: "setage",
+  payload: 20,
 });
-store.dispatch({
-  type: "SUBTRACT",
-  payload: 8000,
-});
+
+// store.dispatch({
+//   type: "ADD",
+//   payload: 15000,
+// });
+// store.dispatch({
+//   type: "ADD",
+//   payload: 30000,
+// });
+// store.dispatch({
+//   type: "SUBTRACT",
+//   payload: 8000,
+// });
