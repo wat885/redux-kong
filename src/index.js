@@ -16,7 +16,7 @@
 // // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
 
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 
 const initialState = {
   results: 15000,
@@ -77,11 +77,16 @@ const employeeReducer = (state = initialState, action) => {
   return state;
 };
 
-const store = createStore(combineReducers({ employeeReducer, userReducer }));
+const myloger = (store) => (next) => (action) => {
+  console.log("Log Action", action);
+  next(action);
+};
+
+const store = createStore(combineReducers({ employeeReducer, userReducer }),{},applyMiddleware(myloger));
 
 // แสดงค่าของ state ที่อยู่ใน store
 store.subscribe(() => {
-  console.log("updating store", store.getState());
+  // console.log("updating store", store.getState());
 });
 
 // ส่ง action
@@ -94,7 +99,7 @@ store.dispatch({
   payload: "Redux",
 });
 store.dispatch({
-  type: "setage",
+  type: "setAge",
   payload: 20,
 });
 
