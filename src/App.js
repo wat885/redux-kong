@@ -1,11 +1,39 @@
-import './App.css';
+import React, { Component } from "react";
+import User from "./User";
+import { connect } from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
+export class App extends Component {
 
-    </div>
-  );
+
+  
+  render() {
+    return (
+      <div>
+        <User username={this.props.user.name} />
+        <button onClick={() => this.props.setName("Redux Tutorial")}>
+          ChangName
+        </button>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    emp: state.emp,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setName: (name) => {
+      dispatch({
+        type: "setName",
+        payload: name,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
